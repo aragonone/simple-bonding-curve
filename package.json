@@ -1,0 +1,27 @@
+{
+  "name": "simple_bonding_curve",
+  "version": "1.0.0",
+  "description": "",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "npx truffle test",
+    "lint": "solium --dir ./contracts"
+  },
+  "author": "ßingen",
+  "license": "ISC",
+  "dependencies": {
+    "@aragon/os": "^4.1.0"
+  },
+  "devDependencies": {
+    "@aragon/apps-shared-migrations": "^1.0.0",
+    "ganache-cli": "^6.1.0",
+    "solidity-coverage": "0.5.8",
+    "solium": "^1.2.3",
+    "truffle": "4.1.14",
+    "web3-eth-abi": "1.0.0-beta.33",
+    "web3-utils": "^1.0.0-beta.50"
+  }
+}

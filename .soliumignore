@@ -1,0 +1,5 @@
+node_modules
+contracts/BancorFormula.sol
+contracts/interfaces
+contracts/test
+contracts/utility
