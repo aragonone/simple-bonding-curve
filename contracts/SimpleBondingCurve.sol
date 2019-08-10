@@ -18,6 +18,8 @@ contract SimpleBondingCurve is IBancorFormula {
     using FixedPointMath for uint256;
 
     uint32 private constant MAX_WEIGHT = 1000000;
+    string private constant ERROR_WRONG_INPUT_VALUES = "SBC_WRONG_INPUT_VALUES";
+    string private constant ERROR_CONNECTOR_WEIGHT_TOO_LOW = "SBC_CONNECTOR_WEIGHT_TOO_LOW";
 
     /**
         @dev given a token supply, connector balance, weight and a deposit amount (in the connector token),
@@ -158,7 +160,7 @@ contract SimpleBondingCurve is IBancorFormula {
         returns (uint256)
     {
         // validate input
-        require(_supply > 0 && _connectorBalance > 0);
+        require(_supply > 0 && _connectorBalance > 0, ERROR_WRONG_INPUT_VALUES);
 
         // special case for 0 deposit amount
         if (_depositAmount == 0)
@@ -188,7 +190,7 @@ contract SimpleBondingCurve is IBancorFormula {
         returns (uint256)
     {
         // validate input
-        require(_supply > 0 && _connectorBalance > 0 && _sellAmount <= _supply);
+        require(_supply > 0 && _connectorBalance > 0 && _sellAmount <= _supply, ERROR_WRONG_INPUT_VALUES);
 
         // special case for 0 sell amount
         if (_sellAmount == 0)
@@ -210,7 +212,7 @@ contract SimpleBondingCurve is IBancorFormula {
 
     function _connectorWeightToCurveDegree(uint32 _connectorWeight) internal pure returns (uint8) {
         // to avoid overflow on uint8 (and dividing by zero implicitly)
-        require(_connectorWeight >= MAX_WEIGHT / 256);
+        require(_connectorWeight >= MAX_WEIGHT / 256, ERROR_CONNECTOR_WEIGHT_TOO_LOW);
         return uint8(MAX_WEIGHT / _connectorWeight - 1);
     }
 }
