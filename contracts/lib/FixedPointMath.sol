@@ -32,20 +32,21 @@ library FixedPointMath {
         if (exp == 1) {
             return base;
         }
-        uint256[] memory tmp = new uint256[](17);
-        result = multiplyFixed(base, base);
-        tmp[0] = 1;
-        tmp[1] = base;
-        tmp[2] = result;
-        uint256 n = exp - 2;
-        while (n > 0) {
-            uint256 i = n;
-            while (tmp[i] == 0) {
-                i--;
+        uint256 tmp = base;
+        uint256 n = exp;
+        while(result == 0 && tmp > 0) {
+            if (n & 1 > 0) {
+                result = tmp;
             }
-            result = multiplyFixed(result, tmp[i]);
-            tmp[exp - n + i] = result;
-            n -= i;
+            n = n >> 1;
+            tmp = multiplyFixed(tmp, tmp);
+        }
+        while (n > 0 && result > 0) {
+            if (n & 1 > 0) {
+                result = multiplyFixed(result, tmp);
+            }
+            n = n >> 1;
+            tmp = multiplyFixed(tmp, tmp);
         }
     }
 
