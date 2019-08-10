@@ -94,8 +94,8 @@ library FixedPointMath {
     }
 
     /*
-    function rootFixed2(uint256 base, uint8 n, uint256 N, uint256 initialValue) internal pure returns (uint256 result) {
-        uint256 previous = initialValue;
+    function rootFixed2(uint256 base, uint8 n, uint256 N) internal pure returns (uint256 result) {
+        uint256 previous = (base + (n - 1) * FIXED_1) / n;
         for (uint256 i = 0; i < N; i++) {
             uint256 pow = powFixed(previous, n - 1);
             uint256 delta1 = divideFixed(base, pow);

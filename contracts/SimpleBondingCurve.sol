@@ -172,9 +172,9 @@ contract SimpleBondingCurve is IBancorFormula {
         uint256 result;
         uint256 baseN = _depositAmount.add(_connectorBalance);
         result = baseN.divideFixed(_connectorBalance).rootFixed(_curveDegree + 1);
-        //result = rootFixed2(divideFixed(baseN, _connectorBalance), uint8(_curveDegree + 1), 3, INITIAL_ROOT_VALUE);
-        uint256 temp = _supply.multiplyFixed(result);
-        return temp - _supply;
+        //result = baseN.divideFixed(_connectorBalance).rootFixed2(_curveDegree + 1, 1);
+        uint256 tmp = _supply.multiplyFixed(result);
+        return tmp - _supply;
     }
 
     function _calculateSaleReturn(
@@ -203,20 +203,9 @@ contract SimpleBondingCurve is IBancorFormula {
         if (_curveDegree == 0)
             return _connectorBalance.mul(_sellAmount) / _supply;
 
-        /*
-        uint256 result;
-        uint256 baseD = _supply - _sellAmount;
-        result = powFixed(divideFixed(_supply, baseD), uint8(_curveDegree + 1)); // TODO: uint8 overflow
-        uint256 temp1 = multiplyFixed(_connectorBalance, result);
-        return divideFixed(temp1, result);
-        */
         uint256 tmp1 = _supply - _sellAmount;
-        uint256 tmp2 = tmp1.divideFixed(_supply);
-        uint256 tmp3 = tmp2.powFixed(_curveDegree + 1);
-        uint256 tmp4 = _connectorBalance.multiplyFixed(tmp3);
-        uint256 tmp5 = _connectorBalance - tmp4;
-        //return (tmp1, tmp2, tmp3, tmp4, tmp5);
-        return tmp5;
+        uint256 tmp2 = _connectorBalance.multiplyFixed(tmp1.divideFixed(_supply).powFixed(_curveDegree + 1));
+        return _connectorBalance - tmp2;
     }
 
     function _connectorWeightToCurveDegree(uint32 _connectorWeight) internal pure returns (uint8) {
